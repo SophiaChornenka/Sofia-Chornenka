@@ -1,0 +1,72 @@
+program = program_part1, program_part2 ;
+
+program_part1 = "startprogram", program_name, ";", "startblok", ( "var", declaration | "variable" ) ;
+program_part2 = ";", ( statement_iteration, "endblok" | statement, "endblok" | "endblok" ) ;
+
+program_name = ident_terminal ;
+
+declaration = value_type, ident, other_declaration_ident_iteration ;
+other_declaration_ident_iteration = { ",", ident } ;
+
+value_type = "int32_t" ;
+
+lr_expression = expression, "==>" ;
+
+bind_left_to_right = lr_expression, ident ;
+
+expression = left_expression, [ binary_action_iteration ] ;
+left_expression = ( "(", expression, ")" )
+                | unary_operator, expression
+                | ident_terminal
+                | value_terminal ;
+
+binary_action_iteration = binary_action, { binary_action } ;
+binary_action = binary_operator, expression ;
+
+unary_operator = "not" | "sub" | "add" ;
+binary_operator = "and" | "or" | "en" | "ne" | ">>" | "<<" | "add" | "sub" | "*" | "/" | "%" ;
+
+cond_block = "if", "(", expression, ")", body_for_true, [ body_for_false ] ;
+
+body_for_true = ( statement_iteration, ";" | statement, ";" | ";" ) ;
+body_for_false = ( "else", statement_iteration, ";"
+                | "else", statement, ";"
+                | "else", ";" ) ;
+forto_cycle = "for", cycle_counter_init, "to", cycle_counter_last_value, cycle_body, ";" ;
+
+cycle_counter_init = (cycle_counter, rl_expression | lr_expression, cycle_counter) ;
+cycle_counter = ident_terminal ;
+cycle_counter_last_value = value_terminal ;
+cycle_body = "do", (statement_in_while_body_iteration | statement) ;
+
+while_cycle = "while", expression, 
+
+repeat_until_cycle = "repeat", 
+                     (statement_iteration, "until", group_expression |
+                      statement, "until", group_expression |
+                      "until", group_expression) ;
+
+group_expression = "(", expression, ")" ;
+
+statement_in_while_body_iteration = statement_in_while_body, statement_in_while_body_iteration | statement_in_while_body ;
+
+statement_iteration = statement, statement_iteration | statement ;
+
+input = "scan", "(", ident, ")" ;
+output = "print", "(", expression, ")" ;
+
+statement = ( ident, rl_expression
+            | lr_expression, ident
+            | cond_block
+            | forto_cycle
+            | while_cycle
+            | repeat_until_cycle
+            | label, ":"
+            | "goto", label
+            | input
+            | output ) ;
+
+statement_iteration = statement, { statement } ;
+
+statement_in_while_body = statement ;
+statement_in_while_body_iteration = statement_in_while_body, { statement_in_while_body } ;
