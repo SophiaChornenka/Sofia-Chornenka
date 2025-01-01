@@ -1,0 +1,57 @@
+{*Prog2*}
+mainprogram 
+data int32_t _aAAAAAAAA,_bBBBBBBBB,_cCCCCCCCC;
+start
+scan _aAAAAAAAA;
+scan _bBBBBBBBB;
+scan _cCCCCCCCC;
+if(_aAAAAAAAA >> _bBBBBBBBB)
+start
+	if(_aAAAAAAAA >> _cCCCCCCCC)
+	start
+		goto Abigger;		
+	end
+	else
+	start
+		print _cCCCCCCCC;
+		goto Outofif;
+		Abigger:		
+		print _aAAAAAAAA;
+		goto Outofif;
+	end
+end	
+if(_bBBBBBBBB << _cCCCCCCCC)
+start
+	print _cCCCCCCCC;
+end	
+else
+start
+	print _bBBBBBBBB;
+end
+Outofif:	
+
+if((_aAAAAAAAA eg _bBBBBBBBB) and (_aAAAAAAAA eg _cCCCCCCCC) and (_bBBBBBBBB eg _cCCCCCCCC))
+start
+	print 1;
+end	
+else
+start
+	print 0;
+end
+if((_aAAAAAAAA << 0) or (_bBBBBBBBB << 0) or (_cCCCCCCCC << 0))
+start
+	print -1;
+end	
+else
+start
+	print 0;
+end
+if(not(_aAAAAAAAA << (_bBBBBBBBB add _cCCCCCCCC)))
+start
+	print(10);
+end	
+else
+start
+	print(0);
+end
+end
