@@ -1,0 +1,51 @@
+program = "mainprogram", "start", {"data", variable_declaration,
+";"}, {statement, ";"}, "end";
+variable_declaration = "int32_t", variable_list;
+variable_list = identifier, {",", identifier};
+identifier = "_", low, up, up, up, up, up, up, up, up;
+up_low = up | low | digit;
+up = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" |
+"M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" |
+"Z";
+low = a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" |
+"m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" |
+"z" ;
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+statement = input_statement | output_statement | assign_statement |
+if_else_statement | goto_statement | label_point | for_statement |
+while_statement | repeat_until_statement | compound_statement;
+input_statement = "scan", identifier;
+output_statement = "print", arithmetic_expression;
+arithmetic_expression = low_priority_expression {low_priority_operator,
+low_priority_expression};
+low_priority_operator = "add" | "sub";
+low_priority_expression = middle_priority_expression {middle_priority_operator,
+middle_priority_expression};
+middle_priority_operator = "*" | "/" | "%";
+middle_priority_expression = identifier | number | "(", arithmetic_expression,
+")";
+number = ["-"], (nonzero_digit, {digit} | "0") ;
+nonzero_digit = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"|;
+assign_statement = arithmetic_expression, "==>", identifier;
+if_else_statement = "if", "(", logical_expression, ")", statement, [";",
+"else", statement];
+logical_expression = and_expression {or_operator, and_expression};
+or_operator = "or";
+and_expression = comparison {and_operator, and_expression};
+and_operator = "and";
+comparison = comparison_expression | [not_operator] "(", logical_expression,
+")";
+not_operator = "not";
+comparison_expression = arithmetic_expression comparison_operator
+arithmetic_expression;
+comparison_operator = "eg" | "ne" | "<<" | ">>";
+goto_statement = "goto", identifier;
+label_point = identifier, ":";
+for_to_statement = "for", assign_statement, "to" | "downto",
+arithmetic_expression, "do", statement;
+statement_in_while = statement | (“continue”, ”while”) | (“exit”, “while”);
+while_statement = "while", logical_expression, {statement_in_while}, "end",
+“while”;
+repeat_until_statement = "repeat", {statement, ";"}, "until", "(",
+logical_expression, ")";
+compoundStatement = "start", {statement, ";"}, "end";
